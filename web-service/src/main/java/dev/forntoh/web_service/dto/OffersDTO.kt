@@ -8,6 +8,6 @@ data class OffersDTO(
     val message: String,
     val count: Int,
     val pages: Int,
-    val offers: List<Offer>,
+    var offers: List<Offer>,
     val information: AppInfo,
 )
