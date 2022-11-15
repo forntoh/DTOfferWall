@@ -2,6 +2,7 @@ package dev.forntoh.dtofferwall.ui.home
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -17,12 +18,14 @@ fun HomeScreen(
     modifier: Modifier = Modifier
 ) {
     val offerList by offerWallViewModel.offers.observeAsState(emptyList())
+    val errorMessage by offerWallViewModel.error.observeAsState()
 
     HomeScreen(
         offerList = offerList,
         onSubmit = offerWallViewModel::updateFilters,
         modifier = modifier.statusBarsPadding(),
         loadMore = offerWallViewModel::nextPage,
+        errorMessage = errorMessage
     )
 }
 
@@ -32,6 +35,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     onSubmit: (String, String, String) -> Unit = { _, _, _ -> },
     loadMore: () -> Unit = {},
+    errorMessage: String?,
 ) {
     var appId by remember { mutableStateOf("") }
     var userId by remember { mutableStateOf("") }
@@ -42,7 +46,7 @@ fun HomeScreen(
     ) {
 
         Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier.padding(16.dp)
         ) {
             OutlinedTextField(
@@ -69,6 +73,9 @@ fun HomeScreen(
                     Text(text = "Token")
                 }
             )
+            errorMessage?.let {
+                Text(text = it, color = MaterialTheme.colors.error)
+            }
             Button(
                 onClick = { onSubmit(appId, userId, token) },
                 modifier = Modifier.fillMaxWidth(),
