@@ -30,6 +30,8 @@ abstract class OfferWallRepo {
      */
     abstract val offers: Flow<List<Offer>>
 
+    abstract val error: Flow<String?>
+
     abstract suspend fun updateFilter(newFilter: OfferFilter): OfferFilter
 
     abstract suspend fun clearOffers()

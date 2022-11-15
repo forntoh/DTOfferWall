@@ -45,6 +45,8 @@ class OfferWallRepoImpl @Inject constructor(
         }
         .flowOn(Dispatchers.IO)
 
+    override val error: Flow<String?> = offerWallNetworkDataSource.error
+
     override suspend fun updateFilter(newFilter: OfferFilter) = newFilter.apply {
         if (page > totalPages.value) page = totalPages.value
         else if (page <= 0) page = 1
