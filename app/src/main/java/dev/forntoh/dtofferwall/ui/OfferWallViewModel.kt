@@ -35,7 +35,7 @@ class OfferWallViewModel @Inject constructor(
     }
 
     fun updateFilters(appId: String, userId: String, token: String) = with(filter) {
-        updateFilters(this.copy(appId = appId, userId = userId, token = token))
+        updateFilters(this.copy(appId = appId, userId = userId, token = token, clearPrev = true))
     }
 
     private fun updateFilters(newFilter: OfferFilter) {
