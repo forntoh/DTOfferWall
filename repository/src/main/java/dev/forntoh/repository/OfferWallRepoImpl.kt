@@ -48,7 +48,8 @@ class OfferWallRepoImpl @Inject constructor(
     override suspend fun updateFilter(newFilter: OfferFilter) = newFilter.apply {
         if (page > totalPages.value) page = totalPages.value
         else if (page <= 0) page = 1
-        else offerWallNetworkDataSource.fetchOffers(this)
+        else if (appId.isNotBlank() && userId.isNotBlank() && token.isNotBlank())
+            offerWallNetworkDataSource.fetchOffers(this)
     }
 
     override suspend fun clearOffers() {
