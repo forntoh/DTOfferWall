@@ -30,6 +30,8 @@ class OfferWallViewModel @Inject constructor(
      */
     val offers = offerWallRepo.offers.asLiveData()
 
+    val error = offerWallRepo.error.asLiveData()
+
     fun nextPage() = with(filter) {
         updateFilters(this.copy(page = page + 1))
     }
