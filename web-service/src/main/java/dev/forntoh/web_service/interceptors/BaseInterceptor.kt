@@ -16,6 +16,7 @@
 
 package dev.forntoh.web_service.interceptors
 
+import dev.forntoh.common.lib.OfferWallHashKeyGenerator
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.util.*
@@ -25,6 +26,8 @@ import javax.inject.Inject
  * Interceptor to add headers to the request
  */
 class BaseInterceptor @Inject constructor() : Interceptor {
+
+    private val offerWallHashKeyGenerator = OfferWallHashKeyGenerator()
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
@@ -36,6 +39,13 @@ class BaseInterceptor @Inject constructor() : Interceptor {
             .addQueryParameter("locale", Locale.GERMAN.toLanguageTag())
             .addQueryParameter("offer_types", "121")
             .addQueryParameter("ip", "109.235.143.113")
+            .addQueryParameter("timestamp", "${Calendar.getInstance().timeInMillis / 1000}")
+            .build()
+
+        val finalUrl = newUrl
+            .newBuilder()
+            .addQueryParameter("hashkey", offerWallHashKeyGenerator.compute(newUrl.query))
+            .removeAllQueryParameters("token")
             .build()
 
         val request = originalRequest
@@ -43,7 +53,7 @@ class BaseInterceptor @Inject constructor() : Interceptor {
             .addHeader("Accept", "application/json")
             .addHeader("Connection", "Keep-Alive")
             .addHeader("Content-Type", "application/json")
-            .url(newUrl)
+            .url(finalUrl)
             .build()
         return chain.proceed(request)
     }
