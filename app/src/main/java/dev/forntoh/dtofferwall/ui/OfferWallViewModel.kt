@@ -17,13 +17,7 @@ class OfferWallViewModel @Inject constructor(
     private val offerWallRepo: OfferWallRepo
 ) : ViewModel() {
 
-    private var filter by mutableStateOf(
-        OfferFilter(
-            appId = "",
-            userId = "",
-            token = ""
-        )
-    )
+    private var filter by mutableStateOf(OfferFilter())
 
     /**
      * LiveData for the Movies
