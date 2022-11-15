@@ -36,7 +36,7 @@ fun OfferList(
         }
     }
 
-    listState.OnBottomReached(buffer = 2, loadMore)
+    listState.OnBottomReached(buffer = 12, loadMore)
 }
 
 @Composable
