@@ -32,6 +32,7 @@ interface MainApiService {
         @Query("appid") appId: String,
         @Query("uid") userId: String,
         @Query("token") token: String,
+        @Query("page") page: Int,
     ): Response<OffersDTO>
 
 }
