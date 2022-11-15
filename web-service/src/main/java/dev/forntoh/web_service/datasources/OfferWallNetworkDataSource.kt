@@ -36,6 +36,9 @@ class OfferWallNetworkDataSource @Inject constructor(
     private val _offersFlow: MutableStateFlow<OffersDTO?> = MutableStateFlow(null)
     val offersFlow = _offersFlow as StateFlow<OffersDTO?>
 
+    private val _error: MutableStateFlow<String?> = MutableStateFlow(null)
+    val error = _error as StateFlow<String?>
+
     suspend fun clearOffers() {
         _offersFlow.emit(_offersFlow.value?.copy(offers = emptyList()))
     }
@@ -48,18 +51,26 @@ class OfferWallNetworkDataSource @Inject constructor(
             offerFilter.page
         )
         if (fetchedData.isSuccessful && fetchedData.body() != null) with(fetchedData.body()!!) {
-            // Get previous data
-            val prev = _offersFlow.value?.offers?.toMutableList() ?: mutableListOf()
+            if (isSuccessful(this)) {
+                // Get previous data
+                val prev = _offersFlow.value?.offers?.toMutableList() ?: mutableListOf()
 
-            // Append new data
-            prev.addAll(offers)
+                // Append new data
+                prev.addAll(offers)
 
-            // Mutate result with new data
-            offers = prev.toList()
+                // Mutate result with new data
+                offers = prev.toList()
 
-            // Emit mutation
-            _offersFlow.emit(this)
+                // Emit mutation
+                _offersFlow.emit(this)
+            }
         }
+    }
+
+    private suspend fun isSuccessful(offersDTO: OffersDTO): Boolean {
+        val isError = offersDTO.code.startsWith("ERROR")
+        if (isError) _error.emit(offersDTO.message)
+        return !isError
     }
 
 }
