@@ -4,5 +4,5 @@ data class OfferFilter(
     var appId: String,
     var userId: String,
     var token: String,
-    var page: Int,
+    var page: Int = 1,
 )
