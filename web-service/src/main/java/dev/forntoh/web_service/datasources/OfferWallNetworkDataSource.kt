@@ -52,15 +52,17 @@ class OfferWallNetworkDataSource @Inject constructor(
         )
         if (fetchedData.isSuccessful && fetchedData.body() != null) with(fetchedData.body()!!) {
             if (isSuccessful(this)) {
-                // Get previous data
-                val prev = _offersFlow.value?.offers?.toMutableList() ?: mutableListOf()
+                if (!offerFilter.clearPrev) {
+                    // Get previous data
+                    val prev = _offersFlow.value?.offers?.toMutableList() ?: mutableListOf()
 
-                // Append new data
-                prev.addAll(offers)
+                    // Append new data
+                    prev.addAll(offers)
 
-                // Mutate result with new data
-                offers = prev.toList()
+                    // Mutate result with new data
+                    offers = prev.toList()
 
+                }
                 // Emit mutation
                 _offersFlow.emit(this)
             }
@@ -69,7 +71,7 @@ class OfferWallNetworkDataSource @Inject constructor(
 
     private suspend fun isSuccessful(offersDTO: OffersDTO): Boolean {
         val isError = offersDTO.code.startsWith("ERROR")
-        if (isError) _error.emit(offersDTO.message)
+        _error.emit(if (isError) offersDTO.message else null)
         return !isError
     }
 
