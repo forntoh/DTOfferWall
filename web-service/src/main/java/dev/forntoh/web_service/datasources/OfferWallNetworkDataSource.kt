@@ -36,6 +36,10 @@ class OfferWallNetworkDataSource @Inject constructor(
     private val _offersFlow: MutableStateFlow<OffersDTO?> = MutableStateFlow(null)
     val offersFlow = _offersFlow as StateFlow<OffersDTO?>
 
+    suspend fun clearOffers() {
+        _offersFlow.emit(_offersFlow.value?.copy(offers = emptyList()))
+    }
+
     suspend fun fetchOffers(offerFilter: OfferFilter) {
         val fetchedData = apiManager.mainApi.fetchOffers(
             offerFilter.appId,
