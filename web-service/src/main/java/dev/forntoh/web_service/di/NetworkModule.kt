@@ -23,7 +23,7 @@ import dagger.hilt.components.SingletonComponent
 import dev.forntoh.web_service.api.ApiManager
 import dev.forntoh.web_service.api.ApiManagerImpl
 import dev.forntoh.web_service.base.BaseUrl
-import dev.forntoh.web_service.interceptors.BaseInterceptor
+import dev.forntoh.web_service.interceptors.RequestInterceptor
 import dev.forntoh.web_service.interceptors.ResponseInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -47,14 +47,14 @@ object NetworkModule {
     @Provides
     fun provideOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
-        baseInterceptor: BaseInterceptor,
+        requestInterceptor: RequestInterceptor,
         responseInterceptor: ResponseInterceptor,
     ): OkHttpClient.Builder = OkHttpClient.Builder()
         .hostnameVerifier { _, _ -> true }
         .connectTimeout(60, TimeUnit.SECONDS)
         .readTimeout(60, TimeUnit.SECONDS)
         .addInterceptor(httpLoggingInterceptor)
-        .addInterceptor(baseInterceptor)
+        .addInterceptor(requestInterceptor)
         .addInterceptor(responseInterceptor)
         .retryOnConnectionFailure(true)
 

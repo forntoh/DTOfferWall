@@ -8,7 +8,7 @@ import dev.forntoh.common.lib.hash
 import dev.forntoh.web_service.api.MainApiService
 import dev.forntoh.web_service.datasources.OfferWallNetworkDataSource
 import dev.forntoh.web_service.dto.OffersDTO
-import dev.forntoh.web_service.interceptors.BaseInterceptor
+import dev.forntoh.web_service.interceptors.RequestInterceptor
 import dev.forntoh.web_service.interceptors.ResponseInterceptor
 import kotlinx.coroutines.runBlocking
 import mockwebserver3.MockResponse
@@ -35,7 +35,7 @@ class OfferWallNetworkDataSourceTest {
         .connectTimeout(1, TimeUnit.SECONDS)
         .readTimeout(1, TimeUnit.SECONDS)
         .writeTimeout(1, TimeUnit.SECONDS)
-        .addInterceptor(BaseInterceptor(offerWallHashKeyUtility))
+        .addInterceptor(RequestInterceptor(offerWallHashKeyUtility))
         .addInterceptor(ResponseInterceptor(offerWallHashKeyUtility))
         .build()
 
