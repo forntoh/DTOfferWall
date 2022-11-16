@@ -27,17 +27,15 @@ class OfferWallViewModel @Inject constructor(
     val error = offerWallRepo.error.asLiveData()
 
     fun nextPage() = with(filter) {
-        updateFilters(this.copy(page = page + 1))
+        updateFilters(this.copy(page = page + 1, clearPrev = false))
     }
 
     fun updateFilters(appId: String, userId: String, token: String) = with(filter) {
         updateFilters(this.copy(appId = appId, userId = userId, token = token, clearPrev = true))
     }
 
-    private fun updateFilters(newFilter: OfferFilter) {
-        viewModelScope.launch {
-            filter = offerWallRepo.updateFilter(newFilter)
-        }
+    private fun updateFilters(newFilter: OfferFilter) = viewModelScope.launch {
+        filter = offerWallRepo.updateFilter(newFilter)
     }
 
 }

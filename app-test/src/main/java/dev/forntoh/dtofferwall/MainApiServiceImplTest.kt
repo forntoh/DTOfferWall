@@ -23,7 +23,7 @@ class MainApiServiceImplTest(
                     code = "OK",
                     message = "OK",
                     count = 1,
-                    pages = 1,
+                    pages = 10,
                     offers = listOf(
                         Offer(
                             link = "test-ink",
