@@ -2,26 +2,32 @@ package dev.forntoh.common.lib
 
 import java.security.MessageDigest
 import java.util.*
+import javax.inject.Inject
 
-class OfferWallHashKeyUtility(
+class OfferWallHashKeyUtility @Inject constructor() {
+
     private val digest: MessageDigest = MessageDigest.getInstance("SHA-1")
-) {
 
-    private fun toQueryMap(query: String?): SortedMap<String, String> {
-        val paramsMap = sortedMapOf<String, String>()
+    private var token: String? = null
+
+    private fun toQueryMap(query: String?): SortedMap<String, String> = sortedMapOf<String, String>().apply {
         query?.split("&")?.forEach {
             val keyValue = it.split("=")
-            paramsMap[keyValue[0]] = keyValue[1]
+            this[keyValue[0]] = keyValue[1]
         }
-        return paramsMap
     }
 
     fun compute(query: String?): String? = with(toQueryMap(query)) {
         remove("hashkey")
-        val token = remove("token") ?: return null
+        token = remove("token") ?: return null
 
         val joinedParams = map { "${it.key}=${it.value}" }.joinToString(separator = "&") { it }
         return "$joinedParams&$token".hash(digest)
+    }
+
+    fun validate(response: String, signature: String): Boolean {
+        val responseHash = "$response&$token".hash(digest)
+        return responseHash == signature
     }
 
 }
