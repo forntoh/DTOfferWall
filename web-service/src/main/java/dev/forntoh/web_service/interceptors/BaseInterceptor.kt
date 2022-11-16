@@ -16,7 +16,7 @@
 
 package dev.forntoh.web_service.interceptors
 
-import dev.forntoh.common.lib.OfferWallHashKeyGenerator
+import dev.forntoh.common.lib.OfferWallHashKeyUtility
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.util.*
@@ -27,7 +27,7 @@ import javax.inject.Inject
  */
 class BaseInterceptor @Inject constructor() : Interceptor {
 
-    private val offerWallHashKeyGenerator = OfferWallHashKeyGenerator()
+    private val offerWallHashKeyUtility = OfferWallHashKeyUtility()
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
@@ -44,7 +44,7 @@ class BaseInterceptor @Inject constructor() : Interceptor {
 
         val finalUrl = newUrl
             .newBuilder()
-            .addQueryParameter("hashkey", offerWallHashKeyGenerator.compute(newUrl.query))
+            .addQueryParameter("hashkey", offerWallHashKeyUtility.compute(newUrl.query))
             .removeAllQueryParameters("token")
             .build()
 

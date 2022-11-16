@@ -3,7 +3,7 @@ package dev.forntoh.common.lib
 import java.security.MessageDigest
 import java.util.*
 
-class OfferWallHashKeyGenerator(
+class OfferWallHashKeyUtility(
     private val digest: MessageDigest = MessageDigest.getInstance("SHA-1")
 ) {
 

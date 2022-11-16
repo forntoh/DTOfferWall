@@ -1,13 +1,13 @@
 package dev.forntoh.web_service.interceptors
 
-import dev.forntoh.common.lib.OfferWallHashKeyGenerator
+import dev.forntoh.common.lib.OfferWallHashKeyUtility
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
 
 class ResponseInterceptor @Inject constructor() : Interceptor {
 
-    private val offerWallHashKeyGenerator = OfferWallHashKeyGenerator()
+    private val offerWallHashKeyUtility = OfferWallHashKeyUtility()
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
