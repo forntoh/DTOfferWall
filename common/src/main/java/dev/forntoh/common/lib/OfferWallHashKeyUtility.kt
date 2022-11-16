@@ -3,7 +3,9 @@ package dev.forntoh.common.lib
 import java.security.MessageDigest
 import java.util.*
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class OfferWallHashKeyUtility @Inject constructor() {
 
     private val digest: MessageDigest = MessageDigest.getInstance("SHA-1")
@@ -25,8 +27,8 @@ class OfferWallHashKeyUtility @Inject constructor() {
         return "$joinedParams&$token".hash(digest)
     }
 
-    fun validate(response: String, signature: String): Boolean {
-        val responseHash = "$response&$token".hash(digest)
+    fun validate(response: String, signature: String?): Boolean {
+        val responseHash = "$response$token".hash(digest)
         return responseHash == signature
     }
 
