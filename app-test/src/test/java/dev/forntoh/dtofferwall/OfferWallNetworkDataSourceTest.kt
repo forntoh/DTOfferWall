@@ -156,12 +156,12 @@ class OfferWallNetworkDataSourceTest {
     @Test
     fun `error message exist when result is unsuccessful`(): Unit = runBlocking {
         mockWebServer.enqueue(
-            MockResponse().setBody(gson.toJson(testOffersDTO.copy(code = "ERROR_")))
+            MockResponse().setBody(gson.toJson(testOffersDTO.copy(code = "ERROR_", message = "TEST ERROR")))
         )
 
         owNetworkDataSource.fetchOffers(testOfferFilter)
 
-        assertEquals("Test Message", owNetworkDataSource.error.value) // Message from response should be sent to error flow
+        assertEquals("TEST ERROR", owNetworkDataSource.error.value) // Message from response should be sent to error flow
     }
 
     @Test
