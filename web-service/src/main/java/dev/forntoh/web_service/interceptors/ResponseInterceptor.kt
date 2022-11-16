@@ -5,23 +5,21 @@ import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
 
-class ResponseInterceptor @Inject constructor() : Interceptor {
-
-    private val offerWallHashKeyUtility = OfferWallHashKeyUtility()
+class ResponseInterceptor @Inject constructor(
+    private val offerWallHashKeyUtility: OfferWallHashKeyUtility
+) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val response = chain.proceed(request)
 
         if (response.isSuccessful) {
+            val responseString = response.peekBody(Long.MAX_VALUE).string()
+            val signature = response.header("X-Sponsorpay-Response-Signature")
 
-            print("XAMP ")
+            val isNotTampered = offerWallHashKeyUtility.validate(responseString, signature)
 
-            println(request.url.query)
-
-//            val responseString = response.peekBody(Long.MAX_VALUE).string()
-//
-//            println(responseString)
+            println(" - $isNotTampered")
         }
         return response
     }

@@ -25,9 +25,9 @@ import javax.inject.Inject
 /**
  * Interceptor to add headers to the request
  */
-class BaseInterceptor @Inject constructor() : Interceptor {
-
-    private val offerWallHashKeyUtility = OfferWallHashKeyUtility()
+class BaseInterceptor @Inject constructor(
+    private val offerWallHashKeyUtility: OfferWallHashKeyUtility
+) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
