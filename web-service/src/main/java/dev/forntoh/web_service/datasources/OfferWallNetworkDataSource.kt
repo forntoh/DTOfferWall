@@ -66,7 +66,7 @@ class OfferWallNetworkDataSource @Inject constructor(
                 // Emit mutation
                 _offersFlow.emit(this)
             }
-        }
+        } else _error.emit(fetchedData.message())
     }
 
     private suspend fun isSuccessful(offersDTO: OffersDTO): Boolean {
