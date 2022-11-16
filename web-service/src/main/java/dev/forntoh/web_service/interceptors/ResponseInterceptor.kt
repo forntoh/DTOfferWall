@@ -17,9 +17,14 @@ class ResponseInterceptor @Inject constructor(
             val responseString = response.peekBody(Long.MAX_VALUE).string()
             val signature = response.header("X-Sponsorpay-Response-Signature")
 
-            val isNotTampered = offerWallHashKeyUtility.validate(responseString, signature)
+            val isValid = offerWallHashKeyUtility.validate(responseString, signature)
 
-            println(" - $isNotTampered")
+            if (!isValid)
+                return response
+                    .newBuilder()
+                    .message("WARNING: Response has been altered")
+                    .code(401)
+                    .build()
         }
         return response
     }
