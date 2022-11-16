@@ -8,8 +8,8 @@ internal class OfferWallHashKeyUtilityTest {
 
     @Test
     fun `hash generation is okay`() = with(OfferWallHashKeyUtility()) {
-        val expectedHash = "e1f1f7c5d56243584942022bc8bdb58c06297bb8"
-        val actualHash = compute("token=1234&p1=1&p2=2")
+        val expectedHash = "e1f1f7c5d56243584942022bc8bdb58c06297bb8" // hash of p1=1&p2=2&1234 see DT Docs
+        val actualHash = compute("token=1234&p2=2&p1=1")
         assertEquals(expectedHash, actualHash)
     }
 
