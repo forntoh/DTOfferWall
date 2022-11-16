@@ -1,11 +1,12 @@
-package dev.forntoh.web_service.api
+package dev.forntoh.web_service_test.api
 
 import dev.forntoh.common.entities.Offer
+import dev.forntoh.web_service.api.MainApiService
 import dev.forntoh.web_service.dto.OffersDTO
 import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Response
 
-class MainApiServiceImplTest(
+public class MainApiServiceImplTest(
     var shouldRequestSucceed: Boolean = true,
     var shouldResponseSucceed: Boolean = true,
 ) : MainApiService {

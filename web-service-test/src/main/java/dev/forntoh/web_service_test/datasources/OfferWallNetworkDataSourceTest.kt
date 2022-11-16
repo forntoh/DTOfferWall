@@ -1,8 +1,8 @@
-package dev.forntoh.web_service.datasources
+package dev.forntoh.web_service_test.datasources
 
 import dev.forntoh.common.entities.OfferFilter
-import dev.forntoh.web_service.api.ApiManagerImplTest
-import dev.forntoh.web_service.api.MainApiServiceImplTest
+import dev.forntoh.web_service.datasources.OfferWallNetworkDataSource
+import dev.forntoh.web_service_test.api.ApiManagerImplTest
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -12,12 +12,12 @@ import kotlin.test.assertNull
 
 class OfferWallNetworkDataSourceTest {
 
-    private lateinit var testMainApi: MainApiServiceImplTest
+    private lateinit var testMainApi: dev.forntoh.web_service_test.api.MainApiServiceImplTest
     private lateinit var owNetworkDataSource: OfferWallNetworkDataSource
 
     @Before
     fun setUp() {
-        testMainApi = MainApiServiceImplTest()
+        testMainApi = dev.forntoh.web_service_test.api.MainApiServiceImplTest()
         owNetworkDataSource = OfferWallNetworkDataSource(ApiManagerImplTest(testMainApi))
     }
 
