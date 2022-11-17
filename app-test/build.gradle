@@ -23,7 +23,7 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':repository')
+    testImplementation project(path: ':repository')
     // Unit Testing
     testImplementation 'junit:junit:4.13.2'
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
