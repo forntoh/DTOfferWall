@@ -3,14 +3,16 @@ package dev.forntoh.dtofferwall.ui.home
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import dev.forntoh.common.entities.Offer
 import dev.forntoh.dtofferwall.ui.OfferWallViewModel
+import dev.forntoh.dtofferwall.ui.components.MyTextField
 
 @Composable
 fun HomeScreen(
@@ -49,35 +51,42 @@ fun HomeScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier.padding(16.dp)
         ) {
-            OutlinedTextField(
+
+            val focusManager = LocalFocusManager.current
+
+            MyTextField(
+                modifier = Modifier.fillMaxWidth(),
+                label = "Application ID",
                 value = appId,
                 onValueChange = { appId = it },
-                modifier = Modifier.fillMaxWidth(),
-                label = {
-                    Text(text = "Application ID")
-                }
+                focusManager = focusManager
             )
-            OutlinedTextField(
+            MyTextField(
+                modifier = Modifier.fillMaxWidth(),
+                label = "User ID",
                 value = userId,
                 onValueChange = { userId = it },
-                modifier = Modifier.fillMaxWidth(),
-                label = {
-                    Text(text = "User ID")
-                }
+                focusManager = focusManager
             )
-            OutlinedTextField(
+            MyTextField(
+                modifier = Modifier.fillMaxWidth(),
+                label = "Token",
                 value = token,
                 onValueChange = { token = it },
-                modifier = Modifier.fillMaxWidth(),
-                label = {
-                    Text(text = "Token")
+                focusManager = focusManager,
+                imeAction = ImeAction.Done,
+                onDone = {
+                    onSubmit(appId, userId, token)
                 }
             )
             errorMessage?.let {
                 Text(text = it, color = MaterialTheme.colors.error)
             }
             Button(
-                onClick = { onSubmit(appId, userId, token) },
+                onClick = {
+                    onSubmit(appId, userId, token)
+                    focusManager.clearFocus()
+                },
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(text = "Find offers")
